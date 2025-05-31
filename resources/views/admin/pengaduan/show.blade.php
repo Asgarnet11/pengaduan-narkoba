@@ -69,7 +69,7 @@
             <form action="{{ route('admin.pengaduan.tanggapan', $pengaduan->id) }}" method="POST">
                 @csrf
                 <div class="mb-4">
-                    <textarea name="isi" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tulis tanggapan Anda di sini..."></textarea>
+                    <textarea name="isi_tanggapan" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tulis tanggapan Anda di sini..."></textarea>
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Kirim Tanggapan</button>

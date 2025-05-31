@@ -52,4 +52,15 @@ class User extends Authenticatable
     {
         return $this->role === 'masyarakat';
     }
+
+    // Profile photo helper
+    public function getProfilePhotoUrl()
+    {
+        if ($this->foto) {
+            return asset('storage/' . $this->foto);
+        }
+
+        // Generate initials avatar if no photo
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    }
 }

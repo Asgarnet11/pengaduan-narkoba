@@ -14,9 +14,15 @@ class DashboardController extends Controller
             return redirect('/admin/dashboard');
         }
 
-        $pengaduan = Pengaduan::where('user_id', Auth::id())->with(['kategori', 'tanggapan'])->orderBy('created_at', 'desc')->get();
+        // Get all complaints, ordered by creation date
+        $pengaduan = Pengaduan::with(['kategori', 'tanggapan', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        // Tambahkan greeting
+        // For statistics, only count user's own complaints
+        $userPengaduan = $pengaduan->where('user_id', Auth::id());
+
+        // Add greeting
         $hour = now()->format('H');
         if ($hour < 12) {
             $greeting = 'Pagi';
@@ -26,16 +32,24 @@ class DashboardController extends Controller
             $greeting = 'Malam';
         }
 
-        // Data statistik untuk dashboard
-        $totalPengaduan = $pengaduan->count();
-        $pengaduanProses = $pengaduan->where('status', 'diproses')->count();
-        $pengaduanSelesai = $pengaduan->where('status', 'selesai')->count();
-        $pengaduanDitolak = $pengaduan->where('status', 'ditolak')->count();
+        // Data statistik for dashboard (user's own complaints)
+        $totalPengaduan = $userPengaduan->count();
+        $pengaduanProses = $userPengaduan->where('status', 'diproses')->count();
+        $pengaduanSelesai = $userPengaduan->where('status', 'selesai')->count();
+        $pengaduanDitolak = $userPengaduan->where('status', 'ditolak')->count();
 
-        // Pengaduan terbaru (5 terakhir)
+        // Recent complaints (5 latest from all users)
         $recentPengaduan = $pengaduan->take(5);
 
-        return view('dashboard', compact('pengaduan', 'greeting', 'totalPengaduan', 'pengaduanProses', 'pengaduanSelesai', 'pengaduanDitolak', 'recentPengaduan'));
+        return view('dashboard', compact(
+            'pengaduan',
+            'greeting',
+            'totalPengaduan',
+            'pengaduanProses',
+            'pengaduanSelesai',
+            'pengaduanDitolak',
+            'recentPengaduan'
+        ));
     }
 
     public function adminDashboard()

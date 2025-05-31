@@ -7,6 +7,7 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\SearchController;
 
 // Public routes
 Route::get('/', function () {
@@ -21,6 +22,11 @@ Route::post('/register', [AuthController::class, 'register']);
 // Protected routes
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Search
+    Route::get('/search', [SearchController::class, 'search'])
+        ->name('search')
+        ->middleware(['throttle:30,1']); // Limit to 30 searches per minute
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -38,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengaduan/{id}/edit', [PengaduanController::class, 'edit'])->name('pengaduan.edit');
     Route::put('/pengaduan/{id}', [PengaduanController::class, 'update'])->name('pengaduan.update');
     Route::delete('/pengaduan/{id}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+    Route::post('/pengaduan/{id}/tanggapan', [PengaduanController::class, 'addTanggapan'])
+        ->name('pengaduan.tanggapan')
+        ->middleware(['throttle:6,1']); // Limit to 6 tanggapan per minute
 
     // Admin routes
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {

@@ -11,15 +11,19 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $pengaduan = Pengaduan::with(['user', 'kategori'])->latest()->take(10)->get();
+        $pengaduan = Pengaduan::with(['user', 'kategori'])
+            ->latest()
+            ->paginate(10);
+
         $stats = [
             'total' => Pengaduan::count(),
             'terkirim' => Pengaduan::where('status', 'terkirim')->count(),
             'diproses' => Pengaduan::where('status', 'diproses')->count(),
             'selesai' => Pengaduan::where('status', 'selesai')->count(),
         ];
+        $kategoris = Kategori::all();
 
-        return view('admin.dashboard', compact('pengaduan', 'stats'));
+        return view('admin.dashboard', compact('pengaduan', 'stats', 'kategoris'));
     }
 
     public function index()
@@ -52,18 +56,16 @@ class AdminController extends Controller
     public function addTanggapan(Request $request, $id)
     {
         $request->validate([
-            'isi' => 'required|string|min:10'
+            'isi_tanggapan' => 'required|string|min:10'
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
 
-        $pengaduan->tanggapan()->updateOrCreate(
-            ['pengaduan_id' => $id],
-            [
-                'isi' => $request->isi,
-                'admin_id' => Auth::id()
-            ]
-        );
+        $pengaduan->tanggapan()->create([
+            'isi_tanggapan' => $request->isi_tanggapan,
+            'admin_id' => Auth::id(),
+            'tanggal' => now()
+        ]);
 
         return back()->with('success', 'Tanggapan berhasil disimpan');
     }
