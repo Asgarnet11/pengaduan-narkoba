@@ -91,7 +91,7 @@ php artisan storage:link
 9. Compile assets
 
 ```bash
-npm run dev
+npm run build
 ```
 
 10. Jalankan server
