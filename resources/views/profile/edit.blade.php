@@ -151,18 +151,44 @@
 @push('scripts')
 <script>
     // Image preview functionality
-    document.getElementById('foto_input').addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            const reader = new FileReader();
-            const preview = document.getElementById('preview_photo');
+    const fotoInput = document.getElementById('foto_input');
+    const preview = document.getElementById('preview_photo');
+    let originalSrc = preview.src;
 
+    fotoInput.addEventListener('change', function(e) {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('File harus berformat JPG, JPEG, atau PNG');
+                e.target.value = '';
+                preview.src = originalSrc;
+                return;
+            }
+
+            // Validate file size
+            const fileSize = file.size / 1024 / 1024; // in MB
+            if (fileSize > 2) {
+                alert('Ukuran file tidak boleh lebih dari 2MB');
+                e.target.value = '';
+                preview.src = originalSrc;
+                return;
+            }
+
+            const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
             }
+            reader.onerror = function() {
+                alert('Error membaca file');
+                preview.src = originalSrc;
+            }
+            reader.readAsDataURL(file);
 
-            reader.readAsDataURL(e.target.files[0]);
-
-            // Validate file size
+            // Save current src as original for reverting if needed
+            originalSrc = preview.src;
             const fileSize = e.target.files[0].size / 1024 / 1024; // in MB
             if (fileSize > 2) {
                 alert('File terlalu besar. Maksimal ukuran file adalah 2MB');

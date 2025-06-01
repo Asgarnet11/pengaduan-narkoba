@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -33,22 +34,38 @@ class ProfileController extends Controller
 
         $data = $request->only(['name', 'email', 'nik', 'telp']);
 
-        if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
-            if ($user->foto) {
-                Storage::delete('public/' . $user->foto);
+        try {
+            if ($request->hasFile('foto')) {
+                $foto = $request->file('foto');
+
+                // Validasi ukuran dan tipe file
+                if ($foto->getSize() > 2 * 1024 * 1024) {
+                    return back()->with('error', 'Ukuran file tidak boleh lebih dari 2MB');
+                }
+
+                if (!in_array($foto->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
+                    return back()->with('error', 'Format file harus JPG, JPEG, atau PNG');
+                }
+
+                // Hapus foto lama jika ada
+                if ($user->foto) {
+                    Storage::disk('public')->delete($user->foto);
+                }
+
+                // Upload foto baru dengan nama unik
+                $fileName = time() . '_' . $foto->getClientOriginalName();
+                $path = $foto->storeAs('profile', $fileName, 'public');
+                $data['foto'] = $path;
             }
 
-            // Upload foto baru
-            $foto = $request->file('foto');
-            $path = $foto->store('profile', 'public');
-            $data['foto'] = $path;
-        }
+            $user->update($data);
 
-        try {
-        $user->update($data);
-        return back()->with('success', 'Profil berhasil diperbarui');
+            // Force refresh the model to get the latest data
+            $user = $user->fresh();
+
+            return back()->with('success', 'Profil berhasil diperbarui');
         } catch (\Exception $e) {
+            Log::error('Error updating profile: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat memperbarui profil');
         }
     }

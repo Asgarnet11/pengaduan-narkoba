@@ -90,7 +90,7 @@
                         <div class="px-4 py-2 border-b border-gray-100">
                             <p class="text-sm text-gray-500">Hasil Pencarian</p>
                         </div>
-                        <div id="searchResults">
+                        <div id="searchResults" class="max-h-[400px] overflow-y-auto">
                             <!-- Search results will be injected here -->
                         </div>
                     </div>
@@ -240,8 +240,9 @@ window.addEventListener('search-query', event => {
             const searchResults = document.getElementById('searchResults');
             if (results.length === 0) {
                 searchResults.innerHTML = `
-                    <div class="px-4 py-3 text-sm text-gray-500">
-                        Tidak ada hasil yang ditemukan
+                    <div class="flex flex-col items-center justify-center py-8">
+                        <img src="https://illustrations.popsy.co/gray/falling-box.svg" alt="No Results" class="w-24 h-24 mb-4">
+                        <p class="text-sm text-gray-500">Tidak ada hasil yang ditemukan</p>
                     </div>
                 `;
                 return;
@@ -249,20 +250,42 @@ window.addEventListener('search-query', event => {
 
             searchResults.innerHTML = results.map(result => `
                 <a href="${result.url}" class="block px-4 py-3 hover:bg-gray-50 transition duration-200">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">${result.judul}</p>
-                            <p class="text-xs text-gray-500">${result.kategori}</p>
+                    <div class="flex items-start space-x-3">
+                        <img class="h-8 w-8 rounded-full object-cover flex-shrink-0" src="${result.photo_url}" alt="${result.pelapor}'s Avatar">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex justify-between items-start">
+                                <div class="truncate">
+                                    <p class="text-sm font-medium text-gray-900">${result.judul}</p>
+                                    <p class="text-xs text-gray-600 truncate">${result.isi}</p>
+                                </div>
+                                <span class="ml-2 px-2 py-1 text-xs rounded-full whitespace-nowrap ${getStatusClass(result.status)}">
+                                    ${ucfirst(result.status)}
+                                </span>
+                            </div>
+                            <div class="mt-1 flex items-center text-xs text-gray-500">
+                                <span class="flex items-center">
+                                    <i class="far fa-user mr-1"></i>
+                                    ${result.pelapor}
+                                    ${result.is_own ? '<span class="ml-1 px-1.5 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">Anda</span>' : ''}
+                                </span>
+                                <span class="mx-2">•</span>
+                                <span class="flex items-center">
+                                    <i class="far fa-folder mr-1"></i>
+                                    ${result.kategori}
+                                </span>
+                                <span class="mx-2">•</span>
+                                <span>${result.created_at}</span>
+                            </div>
                         </div>
-                        <span class="px-2 py-1 text-xs rounded-full ${getStatusClass(result.status)}">
-                            ${result.status}
-                        </span>
                     </div>
-                    <p class="mt-1 text-xs text-gray-500">${result.created_at}</p>
                 </a>
             `).join('<div class="border-t border-gray-100"></div>');
         });
 });
+
+function ucfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function getStatusClass(status) {
     switch(status) {

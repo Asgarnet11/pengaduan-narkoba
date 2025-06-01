@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -56,11 +57,11 @@ class User extends Authenticatable
     // Profile photo helper
     public function getProfilePhotoUrl()
     {
-        if ($this->foto) {
+        if ($this->foto && Storage::disk('public')->exists($this->foto)) {
             return asset('storage/' . $this->foto);
         }
 
         // Generate initials avatar if no photo
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&size=256&bold=true&color=7F9CF5&background=EBF4FF';
     }
 }
