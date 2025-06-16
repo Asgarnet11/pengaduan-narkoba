@@ -37,8 +37,8 @@ Pastikan sistem Anda telah terpasang:
 1. **Clone repositori**
 
     ```bash
-    git clone https://github.com/AndraZero121/pengaduan-masyarakat.git
-    cd pengaduan-masyarakat
+    git clone https://github.com/Asgarnet11/pengaduan-narkoba.git
+    cd pengaduan-narkoba
     ```
 
 2. **Install dependencies PHP**
@@ -103,13 +103,13 @@ Pastikan sistem Anda telah terpasang:
 
 ### Admin
 
--   Email: sensei@teacher.edu
--   Password: cunny123
+-   Email: masyarakat@silapor.id
+-   Password: masyarakat123
 
 ### Masyarakat
 
--   Email: sunaookamishiroko@abydos.sch
--   Password: shirokoiwak
+-   Email: asgarganteng@silapor.id
+-   Password: asgar123
 
 ## 🗂️ Struktur Pengaduan
 

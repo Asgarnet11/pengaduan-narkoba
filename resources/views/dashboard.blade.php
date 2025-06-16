@@ -5,7 +5,7 @@
 @section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Welcome Section -->
+            <!-- Welcome to Section -->
             <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl shadow-xl overflow-hidden mb-8"
                 data-aos="fade-up">
                 <div class="px-8 py-12 relative">

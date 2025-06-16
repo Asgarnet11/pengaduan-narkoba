@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: pengaduan-narkoba
+    env: docker
+    repo: https://github.com/Asgarnet11/pengaduan-narkoba.git
+    region: singapore
+    branch: main
+    plan: free
+    buildCommand: ""
+    startCommand: ""
+    healthCheckPath: /
