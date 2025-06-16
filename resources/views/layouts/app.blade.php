@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="Sistem Pengaduan Masyarakat - Platform pengaduan masyarakat yang efektif dan transparan">
+    <meta name="description"
+        content="Sistem Informasi Pengaduan Narkoba - Platform pengaduan narkoba yang efektif dan aman untuk masyarakat.">
     <meta name="theme-color" content="#2563eb">
     <title>@yield('title', 'Sistem Pengaduan Masyarakat')</title>
 
@@ -25,8 +27,12 @@
                     },
                     keyframes: {
                         float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            '0%, 100%': {
+                                transform: 'translateY(0)'
+                            },
+                            '50%': {
+                                transform: 'translateY(-10px)'
+                            },
                         }
                     }
                 }
@@ -38,7 +44,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -65,7 +73,9 @@
     <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
 
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -77,12 +87,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #c7d2fe;
+            background: #a7b1d7;
             border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #818cf8;
+            background: #5060f0;
         }
 
         /* Card Hover Effects */
@@ -113,7 +123,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
             transform: translateX(-100%);
             transition: 0.5s;
         }
@@ -154,6 +164,7 @@
                 transform: translateX(100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -168,16 +179,14 @@
         }
     </style>
 </head>
+
 <body class="bg-gray-50 font-sans antialiased">
     <x-navigation :isAdmin="auth()->check() && auth()->user()->isAdmin()" />
 
     <!-- Flash Messages -->
-    @if(session('success'))
-        <div x-data="{ show: true }"
-             x-show="show"
-             x-init="setTimeout(() => show = false, 3000)"
-             @click="show = false"
-             class="toast animate__animated animate__fadeInRight cursor-pointer">
+    @if (session('success'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" @click="show = false"
+            class="toast animate__animated animate__fadeInRight cursor-pointer">
             <div class="bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-3">
                 <i class="fas fa-check-circle text-xl"></i>
                 <p>{{ session('success') }}</p>
@@ -185,12 +194,9 @@
         </div>
     @endif
 
-    @if(session('error'))
-        <div x-data="{ show: true }"
-             x-show="show"
-             x-init="setTimeout(() => show = false, 3000)"
-             @click="show = false"
-             class="toast animate__animated animate__fadeInRight cursor-pointer">
+    @if (session('error'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" @click="show = false"
+            class="toast animate__animated animate__fadeInRight cursor-pointer">
             <div class="bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-3">
                 <i class="fas fa-exclamation-circle text-xl"></i>
                 <p>{{ session('error') }}</p>
@@ -210,24 +216,22 @@
                 <!-- Brand -->
                 <div class="space-y-4 col-span-1 md:col-span-2">
                     <div class="flex items-center space-x-3 group">
-                        <i class="fas fa-building text-3xl text-indigo-400 group-hover:scale-110 transition-transform duration-300"></i>
+                        <i
+                            class="fas fa-building text-3xl text-indigo-400 group-hover:scale-110 transition-transform duration-300"></i>
                         <h3 class="text-2xl font-bold text-gradient">Pengaduan Masyarakat</h3>
                     </div>
                     <p class="text-gray-400 leading-relaxed">
-                        Platform pengaduan masyarakat yang memudahkan komunikasi antara warga dan perangkat desa untuk pelayanan yang lebih baik dan transparan.
+                        Platform pengaduan narkoba yang memudahkan antara masyarakat dan kepolisisan untuk
+                        pengaduan yang lebih fleksibel dan aman.
                     </p>
                     <div class="flex space-x-4 pt-4">
-                        <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
+                        <a href="#"
+                            class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
                             <i class="fab fa-facebook text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
+                        <a href="#"
+                            class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
                             <i class="fab fa-instagram text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-youtube text-xl"></i>
                         </a>
                     </div>
                 </div>
@@ -237,22 +241,28 @@
                     <h4 class="text-lg font-semibold">Menu Utama</h4>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('dashboard') }}" class="text-gray-400 hover:text-white flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            <a href="{{ route('dashboard') }}"
+                                class="text-gray-400 hover:text-white flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('pengaduan.index') }}" class="text-gray-400 hover:text-white flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            <a href="{{ route('pengaduan.index') }}"
+                                class="text-gray-400 hover:text-white flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
                                 <span>Pengaduan</span>
                             </a>
                         </li>
                         @auth
-                            @if(auth()->user()->isAdmin())
+                            @if (auth()->user()->isAdmin())
                                 <li>
-                                    <a href="{{ route('admin.dashboard') }}" class="text-gray-400 hover:text-white flex items-center group">
-                                        <i class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                    <a href="{{ route('admin.dashboard') }}"
+                                        class="text-gray-400 hover:text-white flex items-center group">
+                                        <i
+                                            class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
                                         <span>Admin Panel</span>
                                     </a>
                                 </li>
@@ -267,7 +277,7 @@
                     <div class="space-y-3">
                         <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
                             <i class="fas fa-map-marker-alt w-6"></i>
-                            <span>Jl. Example No. 123, Kota</span>
+                            <span>Jl.lerepako Kec.Laeya Kabupaten Konawe Selatan</span>
                         </p>
                         <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
                             <i class="fas fa-phone w-6"></i>
@@ -289,21 +299,25 @@
             <div class="border-t border-gray-800 mt-12 pt-8" data-aos="fade-up" data-aos-delay="300">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <p class="text-gray-400 text-sm text-center md:text-left">
-                        &copy; {{ date('Y') }} Sistem Pengaduan Masyarakat. All rights reserved.
+                        &copy; {{ date('Y') }} Sistem Pengaduan Narkoba. All rights reserved.
                     </p>
                     <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>
-                        <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Terms of Service</a>
-                        <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
+                        <a href="#"
+                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Privacy
+                            Policy</a>
+                        <a href="#"
+                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Terms of
+                            Service</a>
+                        <a href="#"
+                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Back to Top Button -->
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-                id="backToTop"
-                class="fixed bottom-8 right-8 bg-indigo-600 text-white rounded-full p-3 shadow-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 opacity-0 invisible">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="backToTop"
+            class="fixed bottom-8 right-8 bg-indigo-600 text-white rounded-full p-3 shadow-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 opacity-0 invisible">
             <i class="fas fa-arrow-up"></i>
         </button>
     </footer>
@@ -344,7 +358,8 @@
             const links = document.querySelectorAll('a');
             links.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (link.href && !link.href.includes('#') && !link.href.includes('javascript:')) {
+                    if (link.href && !link.href.includes('#') && !link.href.includes(
+                            'javascript:')) {
                         NProgress.start();
                     }
                 });
@@ -370,7 +385,9 @@
                     anime({
                         targets: card,
                         translateY: -5,
-                        boxShadow: ['0 4px 6px -1px rgba(0, 0, 0, 0.1)', '0 20px 25px -5px rgba(0, 0, 0, 0.1)'],
+                        boxShadow: ['0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+                        ],
                         duration: 300,
                         easing: 'easeOutElastic(1, .8)'
                     });
@@ -380,7 +397,9 @@
                     anime({
                         targets: card,
                         translateY: 0,
-                        boxShadow: ['0 20px 25px -5px rgba(0, 0, 0, 0.1)', '0 4px 6px -1px rgba(0, 0, 0, 0.1)'],
+                        boxShadow: ['0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                            '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                        ],
                         duration: 300,
                         easing: 'easeOutElastic(1, .8)'
                     });
@@ -404,7 +423,7 @@
         });
 
         // Enhanced Toast Notifications
-        @if(session('success') || session('error'))
+        @if (session('success') || session('error'))
             anime({
                 targets: '.toast',
                 translateX: [-100, 0],
@@ -415,4 +434,5 @@
         @endif
     </script>
 </body>
+
 </html>

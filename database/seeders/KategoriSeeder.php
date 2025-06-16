@@ -14,16 +14,18 @@ class KategoriSeeder extends Seeder
     public function run(): void
     {
         $kategori = [
-            ['nama' => 'Infrastruktur', 'deskripsi' => 'Pengaduan terkait infrastruktur umum'],
-            ['nama' => 'Kesehatan', 'deskripsi' => 'Pengaduan terkait layanan kesehatan'],
-            ['nama' => 'Pelayanan', 'deskripsi' => 'Pengaduan terkait pelayanan publik'],
-            ['nama' => 'Keamanan', 'deskripsi' => 'Pengaduan terkait keamanan dan ketertiban'],
-            ['nama' => 'Lingkungan', 'deskripsi' => 'Pengaduan terkait lingkungan hidup'],
-            ['nama' => 'Pendidikan', 'deskripsi' => 'Pengaduan terkait pendidikan'],
-            ['nama' => 'Ekonomi', 'deskripsi' => 'Pengaduan terkait perekonomian'],
-            ['nama' => 'Kebersihan', 'deskripsi' => 'Pengaduan terkait kebersihan'],
-            ['nama' => 'Fasilitas Umum', 'deskripsi' => 'Pengaduan terkait fasilitas umum'],
-            ['nama' => 'Lainnya', 'deskripsi' => 'Pengaduan lainnya'],
+            ['nama' => 'sabu-sabu', 'deskripsi' => 'Pengaduan terkait penyalahgunaan sabu-sabu'],
+            ['nama' => 'narkoba', 'deskripsi' => 'Pengaduan terkait penyalahgunaan narkoba'],
+            ['nama' => 'obat terlarang', 'deskripsi' => 'Pengaduan terkait obat-obatan terlarang'],
+            ['nama' => 'minuman keras', 'deskripsi' => 'Pengaduan terkait minuman keras'],
+            ['nama' => 'perjudian', 'deskripsi' => 'Pengaduan terkait perjudian'],
+            ['nama' => 'senjata api', 'deskripsi' => 'Pengaduan terkait kepemilikan senjata api ilegal'],
+            ['nama' => 'senjata tajam', 'deskripsi' => 'Pengaduan terkait kepemilikan senjata tajam ilegal'],
+            ['nama' => 'pencurian', 'deskripsi' => 'Pengaduan terkait pencurian atau perampokan'],
+            ['nama' => 'kekerasan dalam rumah tangga', 'deskripsi' => 'Pengaduan terkait kekerasan dalam rumah tangga'],
+            ['nama' => 'kekerasan seksual', 'deskripsi' => 'Pengaduan terkait kekerasan seksual'],
+            ['nama' => 'ganja', 'deskripsi' => 'Pengaduan terkait infrastruktur umum'],
+
         ];
 
         foreach ($kategori as $item) {

@@ -11,20 +11,20 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Sensei',
-            'email' => 'sensei@teacher.edu',
-            'password' => Hash::make('cunny132'),
+            'name' => 'masyarakat',
+            'email' => 'masyarakat@silapor.id',
+            'password' => Hash::make('masyarakat123'),
             'role' => 'admin',
-            'nik' => '1234567890123456',
+            'nik' => '1234567890123457',
             'telp' => '081234567890'
         ]);
 
         User::create([
-            'name' => 'Sunaookami Shiroko',
-            'email' => 'sunaookamishiroko@abydos.sch',
-            'password' => Hash::make('shirokoiwak'),
+            'name' => 'asgar fatwahyudi',
+            'email' => 'asgarganteng@silapor.id',
+            'password' => Hash::make('asgar123'),
             'role' => 'masyarakat',
-            'nik' => '6543210987654321',
+            'nik' => '6543210987654322',
             'telp' => '089876543210'
         ]);
     }

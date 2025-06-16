@@ -1,30 +1,30 @@
 # Sistem Pengaduan Masyarakat
 
-Aplikasi web untuk mengelola dan memproses pengaduan masyarakat dengan mudah dan efisien. Dibangun menggunakan Laravel 12 dan Tailwind CSS.
+Aplikasi web modern untuk mengelola dan memproses pengaduan masyarakat secara efektif, transparan, dan responsif. Dibangun menggunakan Laravel 12, Tailwind CSS, dan Alpine.js.
 
-## Fitur Utama
+## ✨ Fitur Utama
 
--   🔒 Sistem autentikasi multi-level (Admin & Masyarakat)
--   📝 Pembuatan dan pengelolaan pengaduan
+-   🔐 Autentikasi multi-level (Admin & Masyarakat)
+-   📝 Pembuatan & pengelolaan pengaduan
 -   🏷️ Kategorisasi pengaduan
--   💬 Sistem tanggapan dan diskusi
+-   💬 Sistem tanggapan & diskusi
 -   🔍 Pencarian pengaduan real-time
 -   📊 Dashboard admin untuk monitoring
 -   👤 Manajemen profil dengan foto
--   📱 Responsive design
+-   📱 Responsive design & animasi modern
 
-## Teknologi yang Digunakan
+## 🚀 Teknologi yang Digunakan
 
--   PHP 8.2
+-   PHP 8.2 atau lebih tinggi
 -   Laravel 12
 -   Tailwind CSS
 -   Alpine.js
 -   MySQL/SQLite
 -   GSAP (Animasi)
 
-## Prasyarat
+## ⚙️ Prasyarat
 
-Sebelum menginstal, pastikan sistem Anda memenuhi persyaratan berikut:
+Pastikan sistem Anda telah terpasang:
 
 -   PHP >= 8.2
 -   Composer
@@ -32,75 +32,74 @@ Sebelum menginstal, pastikan sistem Anda memenuhi persyaratan berikut:
 -   MySQL/SQLite
 -   Git
 
-## Instalasi
+## 🛠️ Instalasi
 
-1. Clone repositori
+1. **Clone repositori**
 
-```bash
-git clone https://github.com/AndraZero121/pengaduan-masyarakat.git
-cd pengaduan-masyarakat
-```
+    ```bash
+    git clone https://github.com/AndraZero121/pengaduan-masyarakat.git
+    cd pengaduan-masyarakat
+    ```
 
-2. Install dependencies PHP
+2. **Install dependencies PHP**
 
-```bash
-composer install
-```
+    ```bash
+    composer install
+    ```
 
-3. Install dependencies JavaScript
+3. **Install dependencies JavaScript**
 
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 
-4. Salin file environment
+4. **Salin file environment**
 
-```bash
-cp .env.example .env
-```
+    ```bash
+    cp .env.example .env
+    ```
 
-5. Generate application key
+5. **Generate application key**
 
-```bash
-php artisan key:generate
-```
+    ```bash
+    php artisan key:generate
+    ```
 
-6. Konfigurasi database di file `.env`
+6. **Konfigurasi database** di file `.env`
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=pengaduan_masyarakat
-DB_USERNAME=root
-DB_PASSWORD=
-```
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=pengaduan_masyarakat
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-7. Jalankan migrasi dan seeder
+7. **Jalankan migrasi & seeder**
 
-```bash
-php artisan migrate --seed
-```
+    ```bash
+    php artisan migrate --seed
+    ```
 
-8. Buat symbolic link untuk storage
+8. **Buat symbolic link untuk storage**
 
-```bash
-php artisan storage:link
-```
+    ```bash
+    php artisan storage:link
+    ```
 
-9. Compile assets
+9. **Compile assets**
 
-```bash
-npm run build
-```
+    ```bash
+    npm run build
+    ```
 
-10. Jalankan server
+10. **Jalankan server**
+    ```bash
+    composer run dev
+    ```
 
-```bash
-composer run dev
-```
-
-## Akun Default
+## 👤 Akun Default
 
 ### Admin
 
@@ -112,7 +111,7 @@ composer run dev
 -   Email: sunaookamishiroko@abydos.sch
 -   Password: shirokoiwak
 
-## Struktur Pengaduan
+## 🗂️ Struktur Pengaduan
 
 Setiap pengaduan memiliki:
 
@@ -121,16 +120,30 @@ Setiap pengaduan memiliki:
 -   Kategori
 -   Status (terkirim/diproses/selesai/ditolak)
 -   Lampiran foto (opsional)
--   Tanggapan dari admin dan masyarakat
+-   Tanggapan dari admin & masyarakat
 
-## Lisensi
+## 📁 Struktur Folder
+
+-   `app/` - Kode backend (Controller, Model, Middleware)
+-   `resources/views/` - Blade template (UI/UX)
+-   `public/` - Aset publik & entry point aplikasi
+-   `routes/` - Definisi routing aplikasi
+-   `database/` - Migrasi, seeder, dan factory
+-   `config/` - Konfigurasi aplikasi
+-   `tests/` - Unit & feature test
+
+## 🧪 Testing
+
+Jalankan seluruh pengujian dengan:
+
+```bash
+php artisan test
+```
+
+## 📜 Lisensi
 
 Project ini dilisensikan di bawah [MIT License](LICENSE).
 
-## Kontribusi
+## 🤝 Kontribusi
 
-Kontribusi selalu diterima dengan baik. Untuk perubahan besar, harap buka issue terlebih dahulu untuk mendiskusikan perubahan yang ingin dilakukan.
-
-## Kredit
-
-Dibuat dengan ❤️ oleh [AndraZero121]
+Kontribusi sangat terbuka! Untuk perubahan besar, silakan buka issue terlebih dahulu untuk diskusi.
