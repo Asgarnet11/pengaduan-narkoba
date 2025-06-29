@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\UserController;
 
 // Public routes
 Route::get('/', function () {
@@ -64,5 +65,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/kategori', [AdminController::class, 'kategoriStore'])->name('kategori.store');
         Route::put('/kategori/{id}', [AdminController::class, 'kategoriUpdate'])->name('kategori.update');
         Route::delete('/kategori/{id}', [AdminController::class, 'kategoriDestroy'])->name('kategori.destroy');
+
+        // User Management
+        Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+        Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+        Route::get('/user/list', [UserController::class, 'index'])->name('user.index');
+        Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+        Route::get('/user/delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
     });
 });

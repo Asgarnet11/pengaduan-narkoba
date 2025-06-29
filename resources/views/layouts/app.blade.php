@@ -259,6 +259,18 @@
                         @auth
                             @if (auth()->user()->isAdmin())
                                 <li>
+                                    <a href="{{ route('admin.user.index') }}"
+                                        class="text-gray-400 hover:text-white flex items-center group">
+                                        <i
+                                            class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                        <span>Kelola Akun</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endauth
+                        @auth
+                            @if (auth()->user()->isAdmin())
+                                <li>
                                     <a href="{{ route('admin.dashboard') }}"
                                         class="text-gray-400 hover:text-white flex items-center group">
                                         <i
