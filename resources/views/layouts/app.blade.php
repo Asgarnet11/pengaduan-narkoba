@@ -87,7 +87,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #a7b1d7;
+            background: #5f5f61;
             border-radius: 5px;
         }
 
@@ -146,7 +146,7 @@
         }
 
         #nprogress .spinner-icon {
-            border-top-color: #818cf8 !important;
+            border-top-color: #474851 !important;
             border-left-color: #6366f1 !important;
         }
 
