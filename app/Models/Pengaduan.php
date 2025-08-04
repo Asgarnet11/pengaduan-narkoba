@@ -18,6 +18,8 @@ class Pengaduan extends Model
         'isi',
         'foto',
         'status',
+        'latitude',
+        'longitude',
         'tanggal'
     ];
 

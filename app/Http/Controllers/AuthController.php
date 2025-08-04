@@ -14,10 +14,12 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            // 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/i',
         ]); // Memvalidasi inputan email dan password
 
         if (Auth::attempt($credentials)) {
@@ -40,7 +42,8 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -61,7 +64,8 @@ class AuthController extends Controller
         return redirect('/login')->with('Berhasil', 'Akun Anda berhasil dibuat. Silakan login.');
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate(); // Menghapus session yang ada
         $request->session()->regenerateToken(); // Mengatur ulang token CSRF

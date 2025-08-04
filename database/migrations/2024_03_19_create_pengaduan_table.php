@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('judul');
             $table->text('isi');
             $table->string('foto')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->enum('status', ['terkirim', 'diproses', 'selesai'])->default('terkirim');
             $table->timestamp('tanggal')->useCurrent();
             $table->timestamps();

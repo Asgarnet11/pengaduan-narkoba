@@ -25,33 +25,51 @@ class PengaduanController extends Controller
         return view('pengaduan.create', compact('kategoris'));
     }
 
+    // app/Http/Controllers/PengaduanController.php
+
     public function store(Request $request)
     {
+        // 1. TAMBAHKAN ATURAN VALIDASI UNTUK LATITUDE DAN LONGITUDE
         $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:min_width=100,min_height=100,max_width=4000,max_height=4000'
+            'judul' => 'required|string|min:10|max:255',
+            'isi' => 'required|string|min:50',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:min_width=100,min_height=100,max_width=4000,max_height=4000',
+
+            // --- Penambahan Validasi ---
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric'
+
         ], [
             'kategori_id.required' => 'Kategori harus dipilih',
             'kategori_id.exists' => 'Kategori tidak valid',
             'judul.required' => 'Judul pengaduan harus diisi',
             'judul.max' => 'Judul tidak boleh lebih dari 255 karakter',
+            'judul.min' => 'Judul pengaduan terlalu pendek, minimal 10 karakter.',
             'isi.required' => 'Isi pengaduan harus diisi',
+            'isi.min' => 'Isi pengaduan terlalu singkat, jelaskan lebih detail minimal 50 karakter.',
             'foto.image' => 'File harus berupa gambar',
             'foto.mimes' => 'Format gambar harus jpeg, png, atau jpg',
             'foto.max' => 'Ukuran gambar maksimal 2MB',
-            'foto.dimensions' => 'Dimensi gambar minimal 100x100px dan maksimal 4000x4000px'
+            'foto.dimensions' => 'Dimensi gambar tidak sesuai.',
+
+            // --- Pesan Validasi Baru ---
+            'latitude.required' => 'Lokasi pada peta wajib ditentukan.',
+            'longitude.required' => 'Lokasi pada peta wajib ditentukan.'
         ]);
 
+        // 2. TAMBAHKAN LATITUDE DAN LONGITUDE KE DALAM ARRAY DATA
         $data = [
             'user_id' => Auth::id(),
             'kategori_id' => $request->kategori_id,
             'judul' => $request->judul,
             'isi' => $request->isi,
-            'status' => 'terkirim'
+            'status' => 'terkirim',
+            'latitude' => $request->latitude,   // <-- BARIS BARU
+            'longitude' => $request->longitude // <-- BARIS BARU
         ];
 
+        // Logika upload foto Anda tetap sama
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
             $fileName = time() . '_' . preg_replace('/[^A-Za-z0-9]/', '', pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $foto->getClientOriginalExtension();

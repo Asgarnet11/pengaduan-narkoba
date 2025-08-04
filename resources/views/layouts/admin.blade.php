@@ -72,6 +72,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
     <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
 
+    {{-- lokasi maps --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
         [x-cloak] {
             display: none !important;
@@ -204,7 +207,7 @@
         </div>
     @endif
     <!-- Footer -->
-    <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    {{-- <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12" data-aos="fade-up" data-aos-duration="1000">
                 <!-- Brand -->
@@ -306,10 +309,7 @@
             class="fixed bottom-8 right-8 bg-indigo-600 text-white rounded-full p-3 shadow-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 opacity-0 invisible">
             <i class="fas fa-arrow-up"></i>
         </button>
-    </footer>
-
-    @stack('scripts')
-
+    </footer> --}}
     <script>
         // Handle Back to Top button visibility
         const backToTop = document.getElementById('backToTop');
@@ -419,6 +419,8 @@
             });
         @endif
     </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

@@ -69,7 +69,30 @@
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold mb-2">Lampiran Foto</h3>
                     <img src="{{ asset('storage/' . $pengaduan->foto) }}" alt="Foto Pengaduan"
-                        class="rounded shadow max-w-xs">
+                        class="rounded shadow max-w-xl">
+                </div>
+            @endif
+
+            @if ($pengaduan->latitude && $pengaduan->longitude)
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold mb-2">Peta Lokasi Kejadian:</h3>
+                    <div id="map-admin" style="height: 400px; border-radius: 8px; border: 1px solid #ddd;"></div>
+
+                    {{-- TOMBOL BARU DITAMBAHKAN DI SINI --}}
+                    <div class="mt-3">
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ $pengaduan->latitude }},{{ $pengaduan->longitude }}"
+                            target="_blank"
+                            class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white font-semibold text-sm rounded-md hover:bg-indigo-700 transition transform hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.944a5.5 5.5 0 0110.421-.79l-1.123 1.124a4 4 0 10-7.078 5.657l-1.12-1.124a5.5 5.5 0 01-.8-4.867z"
+                                    clip-rule="evenodd" />
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                            Buka di Google Maps
+                        </a>
+                    </div>
                 </div>
             @endif
 
@@ -100,6 +123,7 @@
                                 {{ $tanggapan->created_at->format('d M Y H:i') }}</div>
                         </div>
                     @endforeach
+
                 </div>
             @endif
         </div>
@@ -111,3 +135,28 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($pengaduan->latitude && $pengaduan->longitude)
+                var lat = {{ $pengaduan->latitude }};
+                var lon = {{ $pengaduan->longitude }};
+
+                // Buat URL Google Maps
+                var googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+
+                var mapAdmin = L.map('map-admin').setView([lat, lon], 16);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapAdmin);
+
+                // Buat konten untuk popup
+                var popupContent =
+                    `<b>Lokasi Laporan TKP</b><br><a href="${googleMapsUrl}" target="_blank" style="color:blue; text-decoration:underline;">Buka di Google Maps</a>`;
+
+                L.marker([lat, lon]).addTo(mapAdmin)
+                    .bindPopup(popupContent) // <-- Gunakan konten baru di sini
+                    .openPopup();
+            @endif
+        });
+    </script>
+@endpush

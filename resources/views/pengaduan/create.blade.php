@@ -11,6 +11,7 @@
                 class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 @csrf
 
+                {{-- Kategori --}}
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="kategori">
                         Kategori
@@ -29,6 +30,7 @@
                     @enderror
                 </div>
 
+                {{-- Judul --}}
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="judul">
                         Judul
@@ -41,6 +43,7 @@
                     @enderror
                 </div>
 
+                {{-- Isi Pengaduan --}}
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="isi">
                         Isi Pengaduan
@@ -53,7 +56,37 @@
                     @enderror
                 </div>
 
+                {{-- Pencarian Lokasi --}}
                 <div class="mb-4">
+                    <label for="lokasi_pencarian" class="block text-gray-700 text-sm font-bold mb-2">
+                        Ketik Nama Jalan atau Desa untuk Mencari Lokasi
+                    </label>
+                    <div class="flex">
+                        <input type="text" id="lokasi_pencarian"
+                            class="shadow appearance-none border rounded-l w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Contoh: Jl. Antero Hamra, Andoolo">
+                        <button
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r focus:outline-none focus:shadow-outline"
+                            type="button" id="tombol_cari">
+                            Cari Lokasi
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Setelah mencari, Anda bisa menggeser penanda di peta untuk lokasi yang lebih presisi.
+                    </p>
+                </div>
+
+                {{-- Peta --}}
+                <div class="mb-4">
+                    <div id="map" style="height: 400px; border-radius: 8px; border: 1px solid #ddd;"></div>
+                </div>
+
+                {{-- Hidden Inputs untuk Koordinat --}}
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+
+                {{-- Foto Bukti --}}
+                <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="foto">
                         Foto Bukti (Opsional)
                     </label>
@@ -65,12 +98,15 @@
                     @enderror
                 </div>
 
+                {{-- Tombol Submit dan Kembali --}}
                 <div class="flex items-center justify-between">
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Kirim Pengaduan
                     </button>
-                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-800">Kembali</a>
+                    <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-800 underline">
+                        Kembali
+                    </a>
                 </div>
             </form>
         </div>

@@ -72,6 +72,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css">
     <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
 
+    {{-- Maps Leaflet JS --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
     <style>
         [x-cloak] {
             display: none !important;
@@ -336,6 +340,8 @@
 
     @stack('scripts')
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script>
         // Handle Back to Top button visibility
         const backToTop = document.getElementById('backToTop');
@@ -444,6 +450,69 @@
                 easing: 'easeOutElastic(1, .8)'
             });
         @endif
+    </script>
+
+    <script>
+        // --- INISIALISASI PETA AWAL ---
+        // Tentukan titik tengah peta saat pertama kali dimuat (misalnya, Kendari)
+        var kendariCoords = [-3.9722, 122.5148];
+        // Perintahkan Leaflet untuk melukis peta di dalam div dengan id="map"
+        var map = L.map('map').setView(kendariCoords, 13);
+        // Tentukan sumber gambar peta (kita pakai OpenStreetMap yang gratis)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        // Buat penanda awal yang bisa digeser-geser
+        var marker = L.marker(kendariCoords, {
+            draggable: true
+        }).addTo(map);
+
+        // Simpan koordinat awal ke input tak terlihat
+        document.getElementById('latitude').value = kendariCoords[0];
+        document.getElementById('longitude').value = kendariCoords[1];
+
+
+        // --- LOGIKA PENCARIAN SAAT TOMBOL DIKLIK ---
+        // Pilih tombol "Cari" dan berikan perintah untuk "mendengarkan" klik
+        document.getElementById('tombol_cari').addEventListener('click', function() {
+            var query = document.getElementById('lokasi_pencarian').value;
+            if (!query) {
+                alert('Mohon masukkan nama lokasi terlebih dahulu.');
+                return;
+            }
+
+            // Siapkan alamat API Nominatim
+            var apiUrl =
+                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&countrycodes=id`;
+
+            // Kirim permintaan ke Nominatim
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        var lat = data[0].lat;
+                        var lon = data[0].lon;
+
+                        // Pindahkan peta dan penanda ke lokasi yang ditemukan
+                        var newLatLng = new L.LatLng(lat, lon);
+                        map.setView(newLatLng, 17);
+                        marker.setLatLng(newLatLng);
+
+                        // Simpan koordinat baru ke input tak terlihat
+                        document.getElementById('latitude').value = lat;
+                        document.getElementById('longitude').value = lon;
+                    } else {
+                        alert('Lokasi tidak ditemukan.');
+                    }
+                });
+        });
+
+        // --- LOGIKA JIKA PENANDA DIGESER MANUAL ---
+        // Beri perintah pada penanda untuk "mendengarkan" jika selesai digeser
+        marker.on('dragend', function(event) {
+            var position = marker.getLatLng();
+            // Update input tak terlihat dengan posisi terakhir penanda
+            document.getElementById('latitude').value = position.lat;
+            document.getElementById('longitude').value = position.lng;
+        });
     </script>
 </body>
 
