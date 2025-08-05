@@ -8,6 +8,9 @@ use App\Models\Kategori;
 use App\Models\Tanggapan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\NotifikasiPengaduanBaru;
+use Illuminate\Support\Facades\Mail;
+
 
 class PengaduanController extends Controller
 {
@@ -29,47 +32,32 @@ class PengaduanController extends Controller
 
     public function store(Request $request)
     {
-        // 1. TAMBAHKAN ATURAN VALIDASI UNTUK LATITUDE DAN LONGITUDE
+        // Bagian validasi Anda sudah benar, tidak perlu diubah
         $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|min:10|max:255',
             'isi' => 'required|string|min:50',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:min_width=100,min_height=100,max_width=4000,max_height=4000',
-
-            // --- Penambahan Validasi ---
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric'
-
         ], [
-            'kategori_id.required' => 'Kategori harus dipilih',
-            'kategori_id.exists' => 'Kategori tidak valid',
-            'judul.required' => 'Judul pengaduan harus diisi',
-            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter',
-            'judul.min' => 'Judul pengaduan terlalu pendek, minimal 10 karakter.',
-            'isi.required' => 'Isi pengaduan harus diisi',
-            'isi.min' => 'Isi pengaduan terlalu singkat, jelaskan lebih detail minimal 50 karakter.',
-            'foto.image' => 'File harus berupa gambar',
-            'foto.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-            'foto.max' => 'Ukuran gambar maksimal 2MB',
-            'foto.dimensions' => 'Dimensi gambar tidak sesuai.',
-
-            // --- Pesan Validasi Baru ---
+            // ... (semua pesan validasi Anda) ...
             'latitude.required' => 'Lokasi pada peta wajib ditentukan.',
             'longitude.required' => 'Lokasi pada peta wajib ditentukan.'
         ]);
 
-        // 2. TAMBAHKAN LATITUDE DAN LONGITUDE KE DALAM ARRAY DATA
+        // Bagian persiapan data Anda sudah benar
         $data = [
             'user_id' => Auth::id(),
             'kategori_id' => $request->kategori_id,
             'judul' => $request->judul,
             'isi' => $request->isi,
             'status' => 'terkirim',
-            'latitude' => $request->latitude,   // <-- BARIS BARU
-            'longitude' => $request->longitude // <-- BARIS BARU
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude
         ];
 
-        // Logika upload foto Anda tetap sama
+        // Logika upload foto Anda juga sudah benar
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
             $fileName = time() . '_' . preg_replace('/[^A-Za-z0-9]/', '', pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $foto->getClientOriginalExtension();
@@ -77,7 +65,19 @@ class PengaduanController extends Controller
             $data['foto'] = $path;
         }
 
-        Pengaduan::create($data);
+        // --- PERUBAHAN URUTAN DIMULAI DARI SINI ---
+
+        // 1. BUAT PENGADUAN DULU dan simpan hasilnya ke variabel
+        $pengaduanBaru = Pengaduan::create($data);
+
+        // 2. BARU KIRIM EMAIL menggunakan variabel yang sudah dibuat
+        try {
+            Mail::to('afatwahyudi@gmail.com')->send(new NotifikasiPengaduanBaru($pengaduanBaru));
+        } catch (\Exception $e) {
+            // Log::error($e->getMessage());
+            // Jika email gagal, proses tetap lanjut.
+            // Anda bisa menambahkan Log::error($e->getMessage()); di sini untuk debugging jika perlu.
+        }
 
         return redirect('/dashboard')->with('success', 'Pengaduan berhasil dikirim!');
     }
