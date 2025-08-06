@@ -75,7 +75,7 @@
     {{-- Maps Leaflet JS --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-
+    @stack('styles')
     <style>
         [x-cloak] {
             display: none !important;
@@ -214,128 +214,79 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12" data-aos="fade-up" data-aos-duration="1000">
-                <!-- Brand -->
-                <div class="space-y-4 col-span-1 md:col-span-2">
-                    <div class="flex items-center space-x-3 group">
-                        <i
-                            class="fas fa-building text-3xl text-indigo-400 group-hover:scale-110 transition-transform duration-300"></i>
-                        <h3 class="text-2xl font-bold text-gradient">Pengaduan Masyarakat</h3>
+    <footer class="bg-gray-900 text-white" aria-labelledby="footer-heading">
+        <h2 id="footer-heading" class="sr-only">Footer</h2>
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-shield-alt text-3xl text-indigo-400"></i>
+                        <h3 class="text-2xl font-bold">SI Pengaduan Narkoba</h3>
                     </div>
-                    <p class="text-gray-400 leading-relaxed">
-                        Platform pengaduan narkoba yang memudahkan antara masyarakat dan kepolisisan untuk
-                        pengaduan yang lebih fleksibel dan aman.
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Platform pelaporan yang aman dan rahasia untuk mendukung upaya pemberantasan narkoba di
+                        Kabupaten Konawe Selatan.
                     </p>
-                    <div class="flex space-x-4 pt-4">
-                        <a href="#"
-                            class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a href="#"
-                            class="text-gray-400 hover:text-white transform hover:scale-110 transition-all duration-300">
-                            <i class="fab fa-instagram text-xl"></i>
-                        </a>
+                    <div class="flex space-x-4 pt-2">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
+                                class="fab fa-twitter text-xl"></i></a>
                     </div>
                 </div>
 
-                <!-- Quick Links -->
-                <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-lg font-semibold">Menu Utama</h4>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="{{ route('dashboard') }}"
-                                class="text-gray-400 hover:text-white flex items-center group">
-                                <i
-                                    class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('pengaduan.index') }}"
-                                class="text-gray-400 hover:text-white flex items-center group">
-                                <i
-                                    class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
-                                <span>Pengaduan</span>
-                            </a>
-                        </li>
-                        @auth
-                            @if (auth()->user()->isAdmin())
-                                <li>
-                                    <a href="{{ route('admin.user.index') }}"
-                                        class="text-gray-400 hover:text-white flex items-center group">
-                                        <i
-                                            class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
-                                        <span>Kelola Akun</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endauth
-                        @auth
-                            @if (auth()->user()->isAdmin())
-                                <li>
-                                    <a href="{{ route('admin.dashboard') }}"
-                                        class="text-gray-400 hover:text-white flex items-center group">
-                                        <i
-                                            class="fas fa-chevron-right text-xs mr-2 transition-transform duration-300 group-hover:translate-x-1"></i>
-                                        <span>Admin Panel</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endauth
-                    </ul>
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Menu Utama</h4>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href=""
+                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Beranda</a>
+                            </li>
+                            <li><a href="{{ route('pengaduan.create') }}"
+                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Buat
+                                    Laporan</a></li>
+                            @auth
+                                <li><a href="{{ route('dashboard') }}"
+                                        class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Dashboard
+                                        Saya</a></li>
+                                @if (auth()->user()->isAdmin())
+                                    <li><a href="{{ route('admin.dashboard') }}"
+                                            class="text-sm text-indigo-400 hover:text-white transition-colors duration-300">Panel
+                                            Admin</a></li>
+                                @endif
+                            @endauth
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Kontak</h4>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt w-5 mt-1 text-gray-400"></i>
+                                <span class="ml-2 text-sm text-gray-400">Jl. Poros Kendari - Andoolo Km.61, Kab. Konawe
+                                    Selatan</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-phone w-5 mt-1 text-gray-400"></i>
+                                <span class="ml-2 text-sm text-gray-400">+62 123 4567 890</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <!-- Contact -->
-                <div class="space-y-4" data-aos="fade-up" data-aos-delay="200">
-                    <h4 class="text-lg font-semibold">Hubungi Kami</h4>
-                    <div class="space-y-3">
-                        <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                            <i class="fas fa-map-marker-alt w-6"></i>
-                            <span>Jl.lerepako Kec.Laeya Kabupaten Konawe Selatan</span>
-                        </p>
-                        <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                            <i class="fas fa-phone w-6"></i>
-                            <span>+62 123 4567 890</span>
-                        </p>
-                        <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                            <i class="fas fa-envelope w-6"></i>
-                            <span>contact@example.com</span>
-                        </p>
-                        <p class="flex items-center text-gray-400 hover:text-white transition-colors duration-300">
-                            <i class="fas fa-clock w-6"></i>
-                            <span>Senin - Jumat: 08:00 - 16:00</span>
-                        </p>
-                    </div>
+                <div>
+                    <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Lokasi Polres Konawe
+                        Selatan</h4>
+                    <div id="footer-map" class="mt-4 h-40 w-full rounded-lg border-2 border-gray-700"></div>
                 </div>
             </div>
 
-            <!-- Copyright -->
-            <div class="border-t border-gray-800 mt-12 pt-8" data-aos="fade-up" data-aos-delay="300">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-gray-400 text-sm text-center md:text-left">
-                        &copy; {{ date('Y') }} Sistem Pengaduan Narkoba. All rights reserved.
-                    </p>
-                    <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="#"
-                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Privacy
-                            Policy</a>
-                        <a href="#"
-                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Terms of
-                            Service</a>
-                        <a href="#"
-                            class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Contact</a>
-                    </div>
-                </div>
+            <div class="mt-12 border-t border-gray-800 pt-8">
+                <p class="text-sm text-gray-400 text-center">&copy; {{ date('Y') }} SI Pengaduan Narkoba. All Rights
+                    Reserved.</p>
             </div>
         </div>
-
-        <!-- Back to Top Button -->
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="backToTop"
-            class="fixed bottom-8 right-8 bg-indigo-600 text-white rounded-full p-3 shadow-lg hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 opacity-0 invisible">
-            <i class="fas fa-arrow-up"></i>
-        </button>
     </footer>
 
     @stack('scripts')
@@ -451,68 +402,132 @@
             });
         @endif
     </script>
-
     <script>
-        // --- INISIALISASI PETA AWAL ---
-        // Tentukan titik tengah peta saat pertama kali dimuat (misalnya, Kendari)
-        var kendariCoords = [-3.9722, 122.5148];
-        // Perintahkan Leaflet untuk melukis peta di dalam div dengan id="map"
-        var map = L.map('map').setView(kendariCoords, 13);
-        // Tentukan sumber gambar peta (kita pakai OpenStreetMap yang gratis)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        // Buat penanda awal yang bisa digeser-geser
-        var marker = L.marker(kendariCoords, {
-            draggable: true
-        }).addTo(map);
+        // Konfigurasi peta
+        const MAP_CONFIG = {
+            // Koordinat Polres Konawe Selatan (mohon verifikasi koordinat yang tepat)
+            polresCoords: [-4.1325, 122.4567],
+            zoom: 15,
+            popupText: '<b>Polres Konawe Selatan</b><br>Jl. Poros Kendari - Andoolo Km.61, Kab. Konawe Selatan',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+        };
 
-        // Simpan koordinat awal ke input tak terlihat
-        document.getElementById('latitude').value = kendariCoords[0];
-        document.getElementById('longitude').value = kendariCoords[1];
+        // Fungsi untuk inisialisasi peta
+        function initializeFooterMap() {
+            try {
+                // Cek apakah Leaflet sudah dimuat
+                if (typeof L === 'undefined') {
+                    console.error('Leaflet library tidak ditemukan. Pastikan sudah dimuat sebelum script ini.');
+                    return;
+                }
 
+                const mapElement = document.getElementById('footer-map');
+                if (!mapElement) {
+                    console.warn('Element #footer-map tidak ditemukan di halaman ini.');
+                    return;
+                }
 
-        // --- LOGIKA PENCARIAN SAAT TOMBOL DIKLIK ---
-        // Pilih tombol "Cari" dan berikan perintah untuk "mendengarkan" klik
-        document.getElementById('tombol_cari').addEventListener('click', function() {
-            var query = document.getElementById('lokasi_pencarian').value;
-            if (!query) {
-                alert('Mohon masukkan nama lokasi terlebih dahulu.');
-                return;
-            }
+                // Tambahkan loading indicator
+                mapElement.innerHTML =
+                    '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666;"><span>Memuat peta...</span></div>';
 
-            // Siapkan alamat API Nominatim
-            var apiUrl =
-                `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&countrycodes=id`;
-
-            // Kirim permintaan ke Nominatim
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        var lat = data[0].lat;
-                        var lon = data[0].lon;
-
-                        // Pindahkan peta dan penanda ke lokasi yang ditemukan
-                        var newLatLng = new L.LatLng(lat, lon);
-                        map.setView(newLatLng, 17);
-                        marker.setLatLng(newLatLng);
-
-                        // Simpan koordinat baru ke input tak terlihat
-                        document.getElementById('latitude').value = lat;
-                        document.getElementById('longitude').value = lon;
-                    } else {
-                        alert('Lokasi tidak ditemukan.');
-                    }
+                // Inisialisasi peta dengan konfigurasi yang dioptimalkan
+                const footerMap = L.map('footer-map', {
+                    center: MAP_CONFIG.polresCoords,
+                    zoom: MAP_CONFIG.zoom,
+                    // Menonaktifkan semua interaksi pengguna untuk peta footer
+                    dragging: false,
+                    touchZoom: false,
+                    doubleClickZoom: false,
+                    scrollWheelZoom: false,
+                    boxZoom: false,
+                    keyboard: false,
+                    zoomControl: false,
+                    attributionControl: true // Tetap tampilkan attribution untuk compliance
                 });
-        });
 
-        // --- LOGIKA JIKA PENANDA DIGESER MANUAL ---
-        // Beri perintah pada penanda untuk "mendengarkan" jika selesai digeser
-        marker.on('dragend', function(event) {
-            var position = marker.getLatLng();
-            // Update input tak terlihat dengan posisi terakhir penanda
-            document.getElementById('latitude').value = position.lat;
-            document.getElementById('longitude').value = position.lng;
-        });
+                // Menggunakan tile layer yang ringan dan cepat
+                const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    attribution: MAP_CONFIG.attribution,
+                    maxZoom: 19,
+                    subdomains: 'abcd'
+                });
+
+                // Event handler untuk tile loading
+                tileLayer.on('loading', function() {
+                    console.log('Memuat tiles peta...');
+                });
+
+                tileLayer.on('load', function() {
+                    console.log('Peta berhasil dimuat');
+                });
+
+                tileLayer.on('tileerror', function(error) {
+                    console.error('Error memuat tile peta:', error);
+                });
+
+                tileLayer.addTo(footerMap);
+
+                // Buat custom icon untuk marker (opsional)
+                const policeIcon = L.divIcon({
+                    html: '<div style="background-color: #1e40af; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><i class="fas fa-shield-alt" style="font-size: 14px;"></i></div>',
+                    className: 'custom-marker',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15],
+                    popupAnchor: [0, -15]
+                });
+
+                // Menambahkan marker dengan popup
+                const marker = L.marker(MAP_CONFIG.polresCoords, {
+                    icon: policeIcon // Hapus ini jika tidak menggunakan custom icon
+                }).addTo(footerMap);
+
+                // Popup dengan informasi lebih detail
+                marker.bindPopup(MAP_CONFIG.popupText, {
+                    closeButton: false,
+                    offset: L.point(0, -10)
+                });
+
+                // Buka popup secara otomatis (opsional)
+                marker.openPopup();
+
+                // Tambahkan event listener untuk resize window
+                window.addEventListener('resize', function() {
+                    setTimeout(function() {
+                        footerMap.invalidateSize();
+                    }, 100);
+                });
+
+                console.log('Footer map berhasil diinisialisasi');
+
+            } catch (error) {
+                console.error('Error saat inisialisasi peta:', error);
+
+                // Tampilkan pesan error yang user-friendly
+                const mapElement = document.getElementById('footer-map');
+                if (mapElement) {
+                    mapElement.innerHTML =
+                        '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; text-align: center;"><div><i class="fas fa-map-marker-alt"></i><br>Peta tidak dapat dimuat<br><small>Mohon refresh halaman</small></div></div>';
+                }
+            }
+        }
+
+        // Inisialisasi peta HANYA jika elemen #footer-map ada di halaman
+        if (document.getElementById('footer-map')) {
+            // Cek apakah DOM sudah siap
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeFooterMap);
+            } else {
+                // DOM sudah siap, langsung jalankan
+                initializeFooterMap();
+            }
+        }
+
+        // Export untuk penggunaan di tempat lain jika diperlukan
+        window.MapUtils = {
+            initializeFooterMap: initializeFooterMap,
+            MAP_CONFIG: MAP_CONFIG
+        };
     </script>
 </body>
 

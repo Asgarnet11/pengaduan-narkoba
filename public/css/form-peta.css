@@ -1,0 +1,239 @@
+#map {
+    height: 450px;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+}
+
+#map:hover {
+    border-color: #3b82f6;
+}
+
+/* Custom Form Styling */
+.form-input,
+.form-select,
+.form-textarea {
+    transition: all 0.3s ease;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 16px;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Button Styling */
+.btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Loading State */
+.btn-loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Section Styling */
+.form-section {
+    background: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Alert Styling */
+.alert {
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-left-width: 4px;
+}
+
+/* File Input Styling */
+.file-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-input:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+/* Search Input Group */
+.search-group {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-result-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:hover {
+    background: #f3f4f6;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    .container {
+        padding: 16px;
+    }
+
+    .form-section {
+        padding: 16px;
+    }
+
+    #map {
+        height: 300px;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+
+/* Map Controls */
+.map-controls {
+    margin-bottom: 16px;
+}
+
+.coordinates-display {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    color: #374151;
+    margin-top: 8px;
+}
+
+/* Custom marker styling */
+.custom-div-icon {
+    background: transparent;
+    border: none;
+}
+
+/* Character counter */
+.char-counter {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: right;
+    margin-top: 4px;
+}
+
+/* Image preview */
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 12px;
+}
+
+.image-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+}
+
+.remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* Focus animations */
+.focused {
+    transform: scale(1.02);
+}

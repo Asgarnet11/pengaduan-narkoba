@@ -9,8 +9,11 @@ use App\Models\Tanggapan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\NotifikasiPengaduanBaru;
+use Illuminate\Container\Attributes\Log;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Support\Facades\Mail;
-
+use Twilio\Rest\Client;
+use Illuminate\Support\Str;
 
 class PengaduanController extends Controller
 {
@@ -32,55 +35,85 @@ class PengaduanController extends Controller
 
     public function store(Request $request)
     {
-        // Bagian validasi Anda sudah benar, tidak perlu diubah
-        $request->validate([
+        // 1. VALIDASI DATA MASUKAN
+        // ========================
+        $validatedData = $request->validate([
             'kategori_id' => 'required|exists:kategori,id',
             'judul' => 'required|string|min:10|max:255',
             'isi' => 'required|string|min:50',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048|dimensions:min_width=100,min_height=100,max_width=4000,max_height=4000',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Maksimal 2MB
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric'
-        ], [
-            // ... (semua pesan validasi Anda) ...
-            'latitude.required' => 'Lokasi pada peta wajib ditentukan.',
-            'longitude.required' => 'Lokasi pada peta wajib ditentukan.'
         ]);
 
-        // Bagian persiapan data Anda sudah benar
-        $data = [
-            'user_id' => Auth::id(),
-            'kategori_id' => $request->kategori_id,
-            'judul' => $request->judul,
-            'isi' => $request->isi,
-            'status' => 'terkirim',
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude
-        ];
+        // 2. PERSIAPAN DATA UNTUK DISIMPAN
+        // =================================
+        $validatedData['user_id'] = Auth::id();
+        $validatedData['status'] = 'terkirim';
 
-        // Logika upload foto Anda juga sudah benar
+        // 3. PROSES UPLOAD FOTO (JIKA ADA)
+        // =================================
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $fileName = time() . '_' . preg_replace('/[^A-Za-z0-9]/', '', pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $foto->getClientOriginalExtension();
-            $path = $foto->storeAs('pengaduan', $fileName, 'public');
-            $data['foto'] = $path;
+            // Simpan file di storage/app/public/pengaduan
+            $path = $request->file('foto')->store('pengaduan', 'public');
+            $validatedData['foto'] = $path;
         }
 
-        // --- PERUBAHAN URUTAN DIMULAI DARI SINI ---
+        // 4. BUAT PENGADUAN DI DATABASE
+        // ==============================
+        $pengaduanBaru = Pengaduan::create($validatedData);
 
-        // 1. BUAT PENGADUAN DULU dan simpan hasilnya ke variabel
-        $pengaduanBaru = Pengaduan::create($data);
-
-        // 2. BARU KIRIM EMAIL menggunakan variabel yang sudah dibuat
+        // 5. KIRIM NOTIFIKASI EMAIL KE ADMIN
+        // ===================================
         try {
+            // Ganti dengan email admin yang sebenarnya
             Mail::to('afatwahyudi@gmail.com')->send(new NotifikasiPengaduanBaru($pengaduanBaru));
         } catch (\Exception $e) {
-            // Log::error($e->getMessage());
-            // Jika email gagal, proses tetap lanjut.
-            // Anda bisa menambahkan Log::error($e->getMessage()); di sini untuk debugging jika perlu.
+            // Jika email gagal, catat error di log tanpa menghentikan aplikasi
+            Log::error('Gagal mengirim email notifikasi: ' . $e->getMessage());
         }
 
-        return redirect('/dashboard')->with('success', 'Pengaduan berhasil dikirim!');
+        // 6. KIRIM NOTIFIKASI WHATSAPP KE ADMIN (VERSI FLEKSIBEL)
+        // ========================================================
+        try {
+            $receiverNumber = '+6282293560277'; // <-- GANTI DENGAN NOMOR WA ADMIN ANDA
+            $googleMapsLink = "https://www.google.com/maps/search/?api=1&query={$pengaduanBaru->latitude},{$pengaduanBaru->longitude}";
+
+            // Susun pesan yang detail
+            $message  = "🚨 *Laporan Pengaduan Baru Diterima!*\n\n";
+            $message .= "*Judul:*\n" . $pengaduanBaru->judul . "\n\n";
+            $message .= "*Pelapor:*\n" . $pengaduanBaru->user->name . "\n\n";
+            $message .= "*Kategori:*\n" . $pengaduanBaru->kategori->nama . "\n\n";
+            $message .= "*Isi Laporan:*\n" . Str::limit($pengaduanBaru->isi, 150) . "\n\n";
+            $message .= "*Lokasi TKP:*\n" . $googleMapsLink . "\n\n";
+            $message .= "Lihat detail lengkap di dasbor:\n";
+            $message .= route('admin.pengaduan.show', $pengaduanBaru->id);
+
+            // Siapkan data untuk dikirim ke Twilio
+            $twilioData = [
+                'from' => 'whatsapp:' . env('TWILIO_WHATSAPP_FROM'),
+                'body' => $message,
+            ];
+
+            // Cerdas: Kirim gambar HANYA jika di hosting (production) dan ada foto
+            if (app()->environment('production') && $pengaduanBaru->foto) {
+                // asset() akan membuat URL publik yang benar sesuai APP_URL di hosting
+                $twilioData['mediaUrl'] = [asset('storage/' . $pengaduanBaru->foto)];
+            }
+
+            // Kirim pesan via Twilio
+            $client = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+            $client->messages->create('whatsapp:' . $receiverNumber, $twilioData);
+        } catch (\Exception $e) {
+            // Jika WhatsApp gagal, catat error di log tanpa menghentikan aplikasi
+            Log::error('Gagal mengirim notifikasi WhatsApp: ' . $e->getMessage());
+        }
+
+        // 7. ARAHKAN PENGGUNA KEMBALI
+        // =============================
+        return redirect()->route('dashboard')->with('success', 'Pengaduan berhasil dikirim! Petugas akan segera menindaklanjuti.');
     }
+
 
     public function show($id)
     {

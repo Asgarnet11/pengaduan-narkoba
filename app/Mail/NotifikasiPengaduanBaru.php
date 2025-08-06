@@ -40,7 +40,7 @@ class NotifikasiPengaduanBaru extends Mailable
     {
         // Menunjuk ke file view markdown yang sudah dibuat
         return new Content(
-            markdown: 'emails.pengaduan.baru',
+            view: 'emails.pengaduan.baru',
         );
     }
 }

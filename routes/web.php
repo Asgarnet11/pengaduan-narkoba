@@ -10,6 +10,27 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 
+// testing
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifikasiPengaduanBaru;
+use App\Models\Pengaduan;
+
+// Route::get('/tes-email', function () {
+//     $pengaduan = Pengaduan::first();
+//     if (!$pengaduan) {
+//         return "Gagal, tidak ada data pengaduan untuk dites. Silakan buat satu laporan dulu.";
+//     }
+
+//     try {
+//         // GANTI DENGAN EMAIL ANDA UNTUK PENGETESAN
+//         Mail::to('asgarbanyak@gmail.com')->send(new NotifikasiPengaduanBaru($pengaduan));
+
+//         return "<h1>Percobaan kirim email berhasil!</h1><p>Silakan cek inbox dan folder Spam di afatwahyudi@gmail.com</p>";
+//     } catch (\Exception $e) {
+//         return "<h1>Gagal mengirim email.</h1><p>Error: " . $e->getMessage() . "</p>";
+//     }
+// });
+
 // Public routes
 Route::get('/', function () {
     return view('welcome');
