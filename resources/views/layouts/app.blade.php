@@ -5,11 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description"
-        content="Sistem Informasi Pengaduan Narkoba - Platform pengaduan narkoba yang efektif dan aman untuk masyarakat.">
-    <meta name="theme-color" content="#2563eb">
-    <title>@yield('title', 'Sistem Pengaduan Masyarakat')</title>
 
+    <title>@yield('title', 'Sistem Pengaduan Narkoba Konawe Selatan')</title>
+    <meta name="description" content="@yield('description', 'Platform pengaduan narkoba Konawe Selatan yang aman dan terpercaya. Laporkan kasus narkoba dengan mudah dan pantau progress pengaduan.')">
+    <meta name="keywords" content="pengaduan narkoba, konawe selatan, polres, laporan kriminal, keamanan masyarakat">
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Sistem Pengaduan Narkoba Konawe Selatan')">
+    <meta property="og:description" content="@yield('description', 'Platform pengaduan narkoba yang memudahkan masyarakat melaporkan kasus dan memantau progresnya.')">
+    <meta property="og:image" content="@yield('og-image', asset('assets/logo-polres.png'))"> {{-- Buat gambar default --}}
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title', 'Sistem Pengaduan Narkoba Konawe Selatan')">
+    <meta property="twitter:description" content="@yield('description', 'Platform pengaduan narkoba yang memudahkan masyarakat melaporkan kasus dan memantau progresnya.')">
+    <meta property="twitter:image" content="@yield('og-image', asset('assets/og-image-default.jpg'))">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
