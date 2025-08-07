@@ -1,48 +1,51 @@
 <?php
 
+// Pastikan namespace controller Anda benar
 namespace App\Http\Controllers;
 
+use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Pengaduan;
 
-class DashboardController extends Controller
+class DashboardController extends Controller // Ganti nama class jika perlu
 {
     public function index()
     {
         if (Auth::user()->isAdmin()) {
-            return redirect('/admin/dashboard');
+            // Arahkan admin ke dasbor admin, ini sudah benar
+            return redirect()->route('admin.dashboard');
         }
 
-        // Get all complaints, ordered by creation date
-        $pengaduan = Pengaduan::with(['kategori', 'tanggapan', 'user'])
-            ->orderBy('created_at', 'desc')
+        // --- MULAI PERBAIKAN LOGIKA DI SINI ---
+
+        $userId = Auth::id();
+
+        $userPengaduanQuery = Pengaduan::where('user_id', $userId);
+
+        $totalPengaduan = (clone $userPengaduanQuery)->count();
+        $pengaduanProses = (clone $userPengaduanQuery)->where('status', 'diproses')->count();
+        $pengaduanSelesai = (clone $userPengaduanQuery)->where('status', 'selesai')->count();
+        $pengaduanDitolak = (clone $userPengaduanQuery)->where('status', 'ditolak')->count();
+
+        $recentPengaduan = (clone $userPengaduanQuery)
+            ->with(['kategori', 'user', 'tanggapan'])
+            ->latest() // Shortcut untuk orderBy('created_at', 'desc')
+            ->take(5)
             ->get();
 
-        // For statistics, only count user's own complaints
-        $userPengaduan = $pengaduan->where('user_id', Auth::id());
-
-        // Add greeting
-        $hour = now()->format('H');
+        $hour = now()->setTimezone('Asia/Makassar')->hour;
         if ($hour < 12) {
             $greeting = 'Pagi';
-        } elseif ($hour < 17) {
+        } elseif ($hour < 15) {
             $greeting = 'Siang';
+        } elseif ($hour < 18) {
+            $greeting = 'Sore';
         } else {
             $greeting = 'Malam';
         }
 
-        // Data statistik for dashboard (user's own complaints)
-        $totalPengaduan = $userPengaduan->count();
-        $pengaduanProses = $userPengaduan->where('status', 'diproses')->count();
-        $pengaduanSelesai = $userPengaduan->where('status', 'selesai')->count();
-        $pengaduanDitolak = $userPengaduan->where('status', 'ditolak')->count();
-
-        // Recent complaints (5 latest from all users)
-        $recentPengaduan = $pengaduan->take(5);
-
+        // 6. Kirim data yang sudah benar dan efisien ke view
         return view('dashboard', compact(
-            'pengaduan',
             'greeting',
             'totalPengaduan',
             'pengaduanProses',
@@ -50,19 +53,5 @@ class DashboardController extends Controller
             'pengaduanDitolak',
             'recentPengaduan'
         ));
-    }
-
-    public function adminDashboard()
-    {
-        $pengaduan = Pengaduan::with(['user', 'kategori', 'tanggapan'])->orderBy('created_at', 'desc')->get();
-
-        $stats = [
-            'total' => Pengaduan::count(),
-            'terkirim' => Pengaduan::where('status', 'terkirim')->count(),
-            'diproses' => Pengaduan::where('status', 'diproses')->count(),
-            'selesai' => Pengaduan::where('status', 'selesai')->count(),
-        ];
-
-        return view('admin.dashboard', compact('pengaduan', 'stats'));
     }
 }

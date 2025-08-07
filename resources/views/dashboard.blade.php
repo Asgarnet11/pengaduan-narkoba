@@ -12,7 +12,7 @@
                     <!-- Animated Background Particles -->
                     {{-- <div class="absolute inset-0" id="particles"></div> --}}
                     <div>
-                        <img src="{{ asset('assets/profil-konsel.jpg') }}" alt="profil-konsel"
+                        <img src="{{ asset('assets/profil-konsel.png') }}" alt="profil-konsel"
                             class="absolute inset-0 w-full h-full object-cover opacity-20">
                     </div>
 

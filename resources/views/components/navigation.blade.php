@@ -1,299 +1,261 @@
-@props(['isAdmin'])
+{{-- resources/views/components/navigation.blade.php --}}
+@props(['isAdmin' => false])
 
-<nav x-data="{ open: false }"
-    class="sticky top-0 z-50 bg-white shadow-md backdrop-blur supports-backdrop-blur:bg-white/95">
+<nav class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 shadow-2xl border-b-4 border-yellow-400 sticky top-0 z-50 backdrop-blur-sm"
+    x-data="{ open: false, profileOpen: false }" @click.away="profileOpen = false">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <!-- Logo and Primary Nav -->
-            <div class="flex items-center">
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 group">
-                        <i
-                            class="fas fa-building text-2xl text-indigo-600 group-hover:scale-110 transition-transform duration-300"></i>
-                        <span class="text-xl font-bold text-gradient">Pengaduan</span>
-                    </a>
-                </div>
-
-                <!-- Primary Navigation -->
-                @auth
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <a href="{{ url('/') }}" @class([
-                            'inline-flex items-center px-1 pt-1 text-sm font-medium transition-all duration-300',
-                            'text-gray-900 border-b-2 border-indigo-500' => request()->is('/'),
-                            'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' => !request()->is(
-                                '/'),
-                        ])>
-                            <i class="fas fa-home mr-2"></i>
-                            Home
-                        </a>
-
-                        <a href="{{ route('dashboard') }}" @class([
-                            'inline-flex items-center px-1 pt-1 text-sm font-medium transition-all duration-300',
-                            'text-gray-900 border-b-2 border-indigo-500' => request()->routeIs(
-                                'dashboard'),
-                            'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' => !request()->routeIs(
-                                'dashboard'),
-                        ])>
-                            <i class="fas fa-table-columns mr-2"></i>
-                            Dashboard
-                        </a>
-
-                        <a href="{{ route('pengaduan.index') }}" @class([
-                            'inline-flex items-center px-1 pt-1 text-sm font-medium transition-all duration-300',
-                            'text-gray-900 border-b-2 border-indigo-500' => request()->routeIs(
-                                'pengaduan.*'),
-                            'text-gray-500 hover:text-gray-700 hover:border-b-2 hover:border-gray-300' => !request()->routeIs(
-                                'pengaduan.*'),
-                        ])>
-                            <i class="fas fa-file-alt mr-2"></i>
-                            Pengaduan
-                        </a>
+        <div class="flex justify-between items-center h-20">
+            <!-- Logo Section -->
+            <div class="flex-shrink-0 flex items-center space-x-4">
+                <a href="/" class="flex items-center space-x-3 group">
+                    <!-- Logo Polres -->
+                    <div class="relative">
+                        <img src="{{ asset('assets/logo-polres.png') }}" alt="Logo Polres Konawe Selatan"
+                            class="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                        </div>
                     </div>
-                @endauth
+
+                    <!-- Logo Konawe Selatan -->
+                    <div class="relative">
+                        <img src="{{ asset('assets/logo-konsel.png') }}" alt="Logo Konawe Selatan"
+                            class="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-110">
+                        <div
+                            class="absolute inset-0 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="hidden lg:block">
+                        <div class="text-white font-bold text-lg leading-tight">
+                            <span class="block text-yellow-300 font-display">POLRES KONAWE SELATAN</span>
+                            <span class="block text-sm font-medium text-blue-200">Sistem Pengaduan Narkoba</span>
+                        </div>
+                    </div>
+                </a>
             </div>
 
-            <!-- Search and User Menu -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6 space-x-4">
-                @auth
-                    <!-- Search Bar -->
-                    <div class="relative" x-data="{ isOpen: false, query: '' }" @click.away="isOpen = false">
-                        <div class="relative">
-                            <input type="text" x-model="query" @focus="isOpen = true"
-                                @input.debounce.300ms="if(query.length >= 3) $dispatch('search-query', { query: query })"
-                                placeholder="Cari pengaduan..."
-                                class="w-64 pl-10 pr-4 py-2 text-sm text-gray-700 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all duration-300">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </div>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-1">
+                    <!-- Home -->
+                    <a href="/"
+                        class="px-4 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300 flex items-center space-x-2 font-medium {{ request()->routeIs('welcome') ? 'bg-blue-700 text-white shadow-lg' : '' }}">
+                        <i class="fas fa-home text-sm"></i>
+                        <span>Beranda</span>
+                    </a>
+
+                    @auth
+                        <!-- Dashboard -->
+                        <a href="{{ route('dashboard') }}"
+                            class="px-4 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300 flex items-center space-x-2 font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-700 text-white shadow-lg' : '' }}">
+                            <i class="fas fa-tachometer-alt text-sm"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <!-- Create Report -->
+                        <a href="{{ route('pengaduan.create') }}"
+                            class="px-4 py-2 rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 font-medium shadow-lg {{ request()->routeIs('pengaduan.create') ? 'from-red-700 to-red-800' : '' }}">
+                            <i class="fas fa-exclamation-triangle text-sm"></i>
+                            <span>Buat Laporan</span>
+                        </a>
+
+                        @if ($isAdmin)
+                            <!-- Admin Panel -->
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 font-bold shadow-lg {{ request()->routeIs('admin.*') ? 'from-yellow-600 to-yellow-700' : '' }}">
+                                <i class="fas fa-shield-alt text-sm"></i>
+                                <span>Panel Petugas</span>
+                            </a>
+                        @endif
+                    @else
+                        <!-- Login -->
+                        <a href="{{ route('login') }}"
+                            class="px-4 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300 flex items-center space-x-2 font-medium">
+                            <i class="fas fa-sign-in-alt text-sm"></i>
+                            <span>Masuk</span>
+                        </a>
+
+                        <!-- Register -->
+                        <a href="{{ route('register') }}"
+                            class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 font-medium shadow-lg">
+                            <i class="fas fa-user-plus text-sm"></i>
+                            <span>Daftar</span>
+                        </a>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- User Menu (Desktop) -->
+            @auth
+                <div class="hidden md:block relative">
+                    <div class="flex items-center space-x-4">
+                        <!-- Police Badge Indicator -->
+                        <div class="flex items-center space-x-2 px-3 py-1 bg-blue-800/50 rounded-full">
+                            <i class="fas fa-badge text-yellow-400 text-sm"></i>
+                            <span class="text-blue-100 text-sm font-medium">
+                                {{ $isAdmin ? 'Petugas' : 'Masyarakat' }}
+                            </span>
                         </div>
 
-                        <!-- Search Results -->
-                        <div x-show="isOpen && query.length >= 3" x-cloak
-                            class="absolute mt-2 w-96 bg-white rounded-lg shadow-lg py-2 z-50 max-h-96 overflow-y-auto"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 transform scale-95"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-100"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-95">
-                            <div class="px-4 py-2 border-b border-gray-100">
-                                <p class="text-sm text-gray-500">Hasil Pencarian</p>
-                            </div>
-                            <div id="searchResults" class="max-h-[400px] overflow-y-auto">
-                                <!-- Search results will be injected here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- User Menu -->
-                    <div class="ml-3 relative" x-data="{ open: false }">
-                        <div>
-                            <button @click="open = !open"
-                                class="flex items-center space-x-3 text-sm focus:outline-none transition duration-300 ease-in-out hover:opacity-80">
-                                <img class="h-8 w-8 rounded-full object-cover border-2 border-indigo-500"
-                                    src="{{ auth()->user()->getProfilePhotoUrl() }}"
-                                    alt="{{ auth()->user()->name }}'s Avatar">
-                                <div class="hidden md:block text-left">
-                                    <span class="block text-gray-900">{{ auth()->user()->name }}</span>
-                                    <span class="block text-xs text-gray-500">{{ auth()->user()->email }}</span>
+                        <!-- Profile Dropdown -->
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" @click.away="open = false"
+                                class="flex items-center space-x-2 px-3 py-2 bg-blue-700/50 hover:bg-blue-700 rounded-lg transition-all duration-300 text-white">
+                                <div
+                                    class="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-user text-blue-900 text-sm"></i>
                                 </div>
-                                <i class="fas fa-chevron-down text-gray-400"></i>
+                                <span class="font-medium text-sm">{{ auth()->user()->name }}</span>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-300"
+                                    :class="{ 'rotate-180': open }"></i>
                             </button>
-                        </div>
 
-                        <!-- User Dropdown -->
-                        <div x-show="open" x-cloak @click.away="open = false"
-                            class="origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-                            x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 transform scale-95"
-                            x-transition:enter-end="opacity-100 transform scale-100"
-                            x-transition:leave="transition ease-in duration-75"
-                            x-transition:leave-start="opacity-100 transform scale-100"
-                            x-transition:leave-end="opacity-0 transform scale-95">
-                            <div class="py-1">
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 transform scale-95"
+                                x-transition:enter-end="opacity-100 transform scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 transform scale-100"
+                                x-transition:leave-end="opacity-0 transform scale-95"
+                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+
+                                <div class="px-4 py-2 border-b border-gray-100">
+                                    <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ auth()->user()->email }}</p>
+                                </div>
+
                                 <a href="{{ route('profile.edit') }}"
-                                    class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 transition-all duration-300">
-                                    <i class="fas fa-user mr-3 text-gray-400 group-hover:text-indigo-500"></i>
-                                    Profile
+                                    class="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200">
+                                    <i class="fas fa-user-edit w-4"></i>
+                                    <span>Edit Profil</span>
                                 </a>
+
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
-                                        class="w-full group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 transition-all duration-300">
-                                        <i class="fas fa-sign-out-alt mr-3 text-gray-400 group-hover:text-indigo-500"></i>
-                                        Keluar
+                                        class="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                        <i class="fas fa-sign-out-alt w-4"></i>
+                                        <span>Keluar</span>
                                     </button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                @else
-                    <div class="flex space-x-4">
-                        <a href="{{ route('login') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-blue-100 border border-indigo-600 rounded-lg hover:bg-indigo-50 transition-all duration-300">
-                            <i class="fas fa-sign-in-alt mr-2"></i>
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}"
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-black bg-blue-100 border border-transparent rounded-lg hover:bg-indigo-700 transition-all duration-300">
-                            <i class="fas fa-user-plus mr-2"></i>
-                            Register
-                        </a>
-                    </div>
-                @endauth
-            </div>
+                </div>
+            @endauth
 
             <!-- Mobile menu button -->
-            <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = !open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+            <div class="md:hidden flex items-center space-x-2">
+                @auth
+                    <!-- Mobile Police Badge -->
+                    <div class="flex items-center space-x-1 px-2 py-1 bg-blue-800/50 rounded-full">
+                        <i class="fas fa-badge text-yellow-400 text-xs"></i>
+                        <span class="text-blue-100 text-xs">{{ $isAdmin ? 'Petugas' : 'Masyarakat' }}</span>
+                    </div>
+                @endauth
+
+                <button @click="open = !open" type="button"
+                    class="inline-flex items-center justify-center p-2 rounded-lg text-white bg-blue-700/50 hover:bg-blue-700 transition-colors duration-200"
+                    aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <i class="fas fa-bars text-lg" x-show="!open"></i>
+                    <i class="fas fa-times text-lg" x-show="open" x-cloak></i>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Mobile menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="sm:hidden">
-        @auth
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    <i class="fas fa-home mr-2"></i>
-                    Dashboard
-                </x-responsive-nav-link>
+    <div class="md:hidden bg-blue-900/95 backdrop-blur-sm border-t border-blue-700" id="mobile-menu" x-show="open"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform -translate-y-2"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform -translate-y-2" x-cloak>
 
-                <x-responsive-nav-link :href="route('pengaduan.index')" :active="request()->routeIs('pengaduan.*')">
-                    <i class="fas fa-file-alt mr-2"></i>
-                    Pengaduan
-                </x-responsive-nav-link>
-
-                @if ($isAdmin)
-                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                        <i class="fas fa-shield-alt mr-2"></i>
-                        Admin Panel
-                    </x-responsive-nav-link>
-                @endif
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <!-- Mobile Logo Title -->
+            <div class="flex items-center justify-center space-x-2 px-3 py-2 mb-4">
+                <img src="{{ asset('assets/logo-polres.png') }}" alt="Polres" class="h-8 w-8 object-contain">
+                <span class="text-yellow-300 font-bold text-sm">POLRES KONAWE SELATAN</span>
+                <img src="{{ asset('assets/logo-konsel.png') }}" alt="Konsel" class="h-8 w-8 object-contain">
             </div>
 
-            <!-- Mobile user menu -->
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="flex items-center px-4">
-                    <div class="shrink-0">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ auth()->user()->getProfilePhotoUrl() }}"
-                            alt="{{ auth()->user()->name }}'s Avatar">
-                    </div>
-                    <div class="ml-3">
-                        <div class="font-medium text-base text-gray-800">{{ auth()->user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
-                    </div>
-                </div>
+            <a href="/"
+                class="flex items-center space-x-3 px-3 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300 {{ request()->routeIs('welcome') ? 'bg-blue-700 text-white' : '' }}">
+                <i class="fas fa-home w-5"></i>
+                <span>Beranda</span>
+            </a>
 
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')">
-                        <i class="fas fa-user mr-2"></i>
-                        Profile
-                    </x-responsive-nav-link>
+            @auth
+                <a href="{{ route('dashboard') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300 {{ request()->routeIs('dashboard') ? 'bg-blue-700 text-white' : '' }}">
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ route('pengaduan.create') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-all duration-300">
+                    <i class="fas fa-exclamation-triangle w-5"></i>
+                    <span>Buat Laporan</span>
+                </a>
+
+                @if ($isAdmin)
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-yellow-500 text-gray-900 hover:bg-yellow-600 transition-all duration-300 font-bold">
+                        <i class="fas fa-shield-alt w-5"></i>
+                        <span>Panel Petugas</span>
+                    </a>
+                @endif
+
+                <!-- Mobile User Info -->
+                <div class="border-t border-blue-700 mt-4 pt-4">
+                    <div class="flex items-center space-x-3 px-3 py-2 mb-2">
+                        <div
+                            class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-blue-900"></i>
+                        </div>
+                        <div>
+                            <p class="text-white font-medium">{{ auth()->user()->name }}</p>
+                            <p class="text-blue-200 text-sm">{{ auth()->user()->email }}</p>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('profile.edit') }}"
+                        class="flex items-center space-x-3 px-3 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300">
+                        <i class="fas fa-user-edit w-5"></i>
+                        <span>Edit Profil</span>
+                    </a>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            <i class="fas fa-sign-out-alt mr-2"></i>
-                            Keluar
-                        </x-responsive-nav-link>
+                        <button type="submit"
+                            class="flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-red-300 hover:bg-red-800/50 hover:text-red-200 transition-all duration-300">
+                            <i class="fas fa-sign-out-alt w-5"></i>
+                            <span>Keluar</span>
+                        </button>
                     </form>
                 </div>
-            </div>
-        @else
-            <div class="pt-2 pb-3 space-y-1 text-gray-900 border-blue-400 bg-blue-900 hover:bg-blue-400">
-                <x-responsive-nav-link :href="route('login')">
-                    <i class="fas fa-sign-in-alt mr-2"></i>
-                    Login
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('register')">
-                    <i class="fas fa-user-plus mr-2"></i>
-                    Register
-                </x-responsive-nav-link>
-            </div>
-        @endauth
+            @else
+                <a href="{{ route('login') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition-all duration-300">
+                    <i class="fas fa-sign-in-alt w-5"></i>
+                    <span>Masuk</span>
+                </a>
+
+                <a href="{{ route('register') }}"
+                    class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all duration-300">
+                    <i class="fas fa-user-plus w-5"></i>
+                    <span>Daftar</span>
+                </a>
+            @endauth
+        </div>
     </div>
 </nav>
 
-@push('scripts')
-    <script>
-        // Search functionality
-        window.addEventListener('search-query', event => {
-            const query = event.detail.query;
-            fetch(`/search?q=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(results => {
-                    const searchResults = document.getElementById('searchResults');
-                    if (results.length === 0) {
-                        searchResults.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-8">
-                        <img src="https://illustrations.popsy.co/gray/falling-box.svg" alt="No Results" class="w-24 h-24 mb-4">
-                        <p class="text-sm text-gray-500">Tidak ada hasil yang ditemukan</p>
-                    </div>
-                `;
-                        return;
-                    }
-
-                    searchResults.innerHTML = results.map(result => `
-                <a href="${result.url}" class="block px-4 py-3 hover:bg-gray-50 transition duration-200">
-                    <div class="flex items-start space-x-3">
-                        <img class="h-8 w-8 rounded-full object-cover flex-shrink-0" src="${result.photo_url}" alt="${result.pelapor}'s Avatar">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex justify-between items-start">
-                                <div class="truncate">
-                                    <p class="text-sm font-medium text-gray-900">${result.judul}</p>
-                                    <p class="text-xs text-gray-600 truncate">${result.isi}</p>
-                                </div>
-                                <span class="ml-2 px-2 py-1 text-xs rounded-full whitespace-nowrap ${getStatusClass(result.status)}">
-                                    ${ucfirst(result.status)}
-                                </span>
-                            </div>
-                            <div class="mt-1 flex items-center text-xs text-gray-500">
-                                <span class="flex items-center">
-                                    <i class="far fa-user mr-1"></i>
-                                    ${result.pelapor}
-                                    ${result.is_own ? '<span class="ml-1 px-1.5 py-0.5 text-xs bg-indigo-100 text-indigo-800 rounded-full">Anda</span>' : ''}
-                                </span>
-                                <span class="mx-2">•</span>
-                                <span class="flex items-center">
-                                    <i class="far fa-folder mr-1"></i>
-                                    ${result.kategori}
-                                </span>
-                                <span class="mx-2">•</span>
-                                <span>${result.created_at}</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            `).join('<div class="border-t border-gray-100"></div>');
-                });
-        });
-
-        function ucfirst(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
-        function getStatusClass(status) {
-            switch (status) {
-                case 'selesai':
-                    return 'bg-green-100 text-green-800';
-                case 'diproses':
-                    return 'bg-yellow-100 text-yellow-800';
-                case 'ditolak':
-                    return 'bg-red-100 text-red-800';
-                default:
-                    return 'bg-gray-100 text-gray-800';
-            }
-        }
-    </script>
-@endpush
+<!-- Police Stripe Decoration -->
+<div class="h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400"></div>

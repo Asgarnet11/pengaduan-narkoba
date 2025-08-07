@@ -209,85 +209,12 @@
     @endif
 
     <!-- Main Content -->
-    <main class="min-h-screen py-12">
+    <main class="min-h-screen">
         @yield('content')
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white" aria-labelledby="footer-heading">
-        <h2 id="footer-heading" class="sr-only">Footer</h2>
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-3">
-                        <i class="fas fa-shield-alt text-3xl text-indigo-400"></i>
-                        <h3 class="text-2xl font-bold">SI Pengaduan Narkoba</h3>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed text-sm">
-                        Platform pelaporan yang aman dan rahasia untuk mendukung upaya pemberantasan narkoba di
-                        Kabupaten Konawe Selatan.
-                    </p>
-                    <div class="flex space-x-4 pt-2">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
-                                class="fab fa-facebook text-xl"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
-                                class="fab fa-instagram text-xl"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300"><i
-                                class="fab fa-twitter text-xl"></i></a>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Menu Utama</h4>
-                        <ul class="mt-4 space-y-3">
-                            <li><a href=""
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Beranda</a>
-                            </li>
-                            <li><a href="{{ route('pengaduan.create') }}"
-                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Buat
-                                    Laporan</a></li>
-                            @auth
-                                <li><a href="{{ route('dashboard') }}"
-                                        class="text-sm text-gray-400 hover:text-white transition-colors duration-300">Dashboard
-                                        Saya</a></li>
-                                @if (auth()->user()->isAdmin())
-                                    <li><a href="{{ route('admin.dashboard') }}"
-                                            class="text-sm text-indigo-400 hover:text-white transition-colors duration-300">Panel
-                                            Admin</a></li>
-                                @endif
-                            @endauth
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Kontak</h4>
-                        <ul class="mt-4 space-y-3">
-                            <li class="flex items-start">
-                                <i class="fas fa-map-marker-alt w-5 mt-1 text-gray-400"></i>
-                                <span class="ml-2 text-sm text-gray-400">Jl. Poros Kendari - Andoolo Km.61, Kab. Konawe
-                                    Selatan</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-phone w-5 mt-1 text-gray-400"></i>
-                                <span class="ml-2 text-sm text-gray-400">+62 123 4567 890</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-md font-semibold tracking-wider uppercase text-gray-300">Lokasi Polres Konawe
-                        Selatan</h4>
-                    <div id="footer-map" class="mt-4 h-40 w-full rounded-lg border-2 border-gray-700"></div>
-                </div>
-            </div>
-
-            <div class="mt-12 border-t border-gray-800 pt-8">
-                <p class="text-sm text-gray-400 text-center">&copy; {{ date('Y') }} SI Pengaduan Narkoba. All Rights
-                    Reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <x-footer />
 
     @stack('scripts')
 
