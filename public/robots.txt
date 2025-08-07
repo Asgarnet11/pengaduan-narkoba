@@ -1,2 +1,17 @@
+# Mengizinkan semua robot (user-agent)
 User-agent: *
-Disallow:
+
+# Direktori dan halaman yang TIDAK BOLEH diindeks oleh Google
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /search
+Disallow: /pengaduan/
+Disallow: /admin/
+
+# Halaman yang BOLEH diindeks
+Allow: /
+
+# Lokasi Sitemap (akan kita buat di bagian 2)
+Sitemap: {{ url('sitemap.xml') }}
